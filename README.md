@@ -24,11 +24,12 @@ Ejecutar lo siguiente:
 Verificas yendo al archivo:
 ### `packjson`
 
-## 6Ejecutar proyecto
+## 6 Ejecutar proyecto
 Iniciar el proyecto:
 ### `npm start`
 
-#Estructura que debería tener la animación componetizado
+
+# Estructura que debería tener la animación componetizado
 ```/src
 │── /components
 │   ├── ThreeScene.js   // Escena principal con el Canvas
