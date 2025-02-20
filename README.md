@@ -1,5 +1,5 @@
 
-#Instalación de librerías en el cmd
+# Instalación de librerías en el cmd
 ## 1 Instalar librerías necesarias
 Ejecutar lo siguiente:
 ### `npm install`
@@ -29,13 +29,16 @@ Iniciar el proyecto:
 ### `npm start`
 
 #Estructura que debería tener la animación componetizado
-/src
+```/src
 │── /components
 │   ├── ThreeScene.js   // Escena principal con el Canvas
 │   ├── Model.js        // Colibrí animado
 │   ├── Background.js   // Nuevo archivo para el fondo
 │   ├── Sphere.js       // Ignorar este archivo, no cuenta 
 │── App.js              // Junta todo
+```
 
-En lo anterior falta crear el background(Jerson)
+
+*Nota:* Falta implementar `Background.js`. (Asignado a Jerson)
+
 
