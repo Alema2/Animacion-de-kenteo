@@ -1,4 +1,5 @@
-#Instalación de librerías
+
+#Instalación de librerías en el cmd
 ## 1 Instalar librerías necesarias
 Ejecutar lo siguiente:
 ### `npm install`
@@ -20,4 +21,21 @@ Ejecutar lo siguiente:
 
 ### `npm install @react-three/drei`
 ## 5 Verificar librerías
-Verficas yendo al archivo ### `packjson`
+Verificas yendo al archivo:
+### `packjson`
+
+## 6Ejecutar proyecto
+Iniciar el proyecto:
+### `npm start`
+
+#Estructura que debería tener la animación componetizado
+/src
+│── /components
+│   ├── ThreeScene.js   // Escena principal con el Canvas
+│   ├── Model.js        // Colibrí animado
+│   ├── Background.js   // Nuevo archivo para el fondo
+│   ├── Sphere.js       // Ignorar este archivo, no cuenta 
+│── App.js              // Junta todo
+
+En lo anterior falta crear el background(Jerson)
+
