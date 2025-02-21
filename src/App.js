@@ -3,6 +3,7 @@ import ThreeScene from "./components/ThreeScene";
 import Model from "./components/Model";
 // Importa luces de Three.js
 import {Stars } from "@react-three/drei";
+import Background from "./components/Background"; 
 //import { OrbitControls} from "@react-three/drei";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
         {/* Luz spot: ilumina un área específica */}
         <spotLight position={[0, 5, 0]} angle={0.3} intensity={2} castShadow />
+        <Background />
 
         {/* Objetos en la escena */}
         {/*<Sphere color="#ff0000" position={[-2, 1, -1]} /> {/* Rojo */}  
