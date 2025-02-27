@@ -3,6 +3,7 @@ import ThreeScene from "./components/ThreeScene";
 import Model from "./components/Model";
 // Importa luces de Three.js
 import {Stars } from "@react-three/drei";
+//import Background from "three/src/renderers/common/Background.js";
 import Background from "./components/Background"; 
 //import { OrbitControls} from "@react-three/drei";
 
@@ -10,25 +11,34 @@ function App() {
   return (
     <div style={{ height: "100vh", overflow: "hidden" }}>
       <ThreeScene>
-        <color attach="background" args={["#2f4f4f"]} />
+        <color attach="background" args={["#000000"]} />
 
-        {/* Luz ambiental: ilumina toda la escena de forma uniforme */}
-        <ambientLight intensity={0.5} />
+        {/* Luz ambiental para iluminacion en general */}
+        <ambientLight intensity={2} />
 
-        {/* Luz direccional: simula la luz del sol */}
-        <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
+        {/* Foco grande desde la esquina superior izquierda */}
+        <directionalLight 
+          position={[-10, 10, 5]} 
+          intensity={20} 
+          castShadow 
+        />
 
-        {/* Luz puntual: ilumina como una bombilla */}
-        <pointLight position={[-3, 2, 3]} intensity={1.5} />
+        {/* Foco grande desde la esquina superior derecha */}
+        <directionalLight 
+          position={[10, 10, 5]} 
+          intensity={5} 
+          castShadow20
+        />
 
-        {/* Luz spot: ilumina un área específica */}
-        <spotLight position={[0, 5, 0]} angle={0.3} intensity={2} castShadow />
-        <Background />
+        {/* Luz puntual extra para resaltar detalles */}
+        <pointLight position={[0, 5, 5]} intensity={2} />
 
-        {/* Objetos en la escena */}
-        {/*<Sphere color="#ff0000" position={[-2, 1, -1]} /> {/* Rojo */}  
-        {/*<Sphere color="#ff00ff" position={[2, 1, 0]} /> {/* Magenta */}
+        {/* Luz spot adicional si necesitas más efectos */}
+        <spotLight position={[0, 10, 0]} angle={0.3} intensity={3} castShadow />
+
+        {/* Modelo 3D */}
         <Model />
+        <Background />
 
         {/* Controles y estrellas */}
         {/*<OrbitControls autoRotate />*/}

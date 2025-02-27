@@ -1,94 +1,110 @@
 import React, { useRef, useEffect } from "react";
-import { useGLTF, OrbitControls } from "@react-three/drei";
+import { useGLTF, OrbitControls, Environment } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import model from "../assets/colibri2_con.glb"; // Ruta del modelo
 
 const Model = () => {
   const ref = useRef(); // Referencia al modelo completo
   const { scene } = useGLTF(model);
-  const wingRef = useRef(); // Referencia a las alas
-  const bodyPartRef = useRef(); // Referencia a otra parte del cuerpo
-  const rotationRef = useRef(0); // Para controlar la rotación de 360°
+  const wingRef = useRef();
+  const bodyPartRef = useRef();
+  const rotationRef = useRef(0);
+
+  // Límites de movimiento
+  const minX = -5;
+  const maxX = 3; // Ajusta el límite derecho donde quieres que se detenga
+  const minY = -2;
+  const maxY = 2;
 
   useEffect(() => {
     console.log("📌 Lista de objetos en el modelo:");
-    scene.traverse((obj) => {
-      console.log(obj.name);
-    });
+    scene.traverse((obj) => console.log(obj.name));
 
     // Reducir tamaño del colibrí
     scene.scale.set(0.005, 0.005, 0.005);
 
-    // 📍 Posición inicial en la esquina inferior izquierda
-    scene.position.set(-5, -2, 0);
-
-    // 🔄 Aplicar rotación de 180° desde el inicio
-    scene.rotation.y = Math.PI; // 180° en radianes
+    // Posición inicial
+    scene.position.set(minX, 1, 0);
+    scene.rotation.y = Math.PI;
 
     // Buscar alas
-    const wings = scene.getObjectByName("BODY_WINGS_0");
-    if (wings) {
-      wingRef.current = wings;
-      console.log("✅ Alas encontradas:", wings);
-    } else {
-      console.log("⚠️ Alas no encontradas");
-    }
+    wingRef.current = scene.getObjectByName("BODY_WINGS_0") || null;
+    bodyPartRef.current = scene.getObjectByName("BODY_BODY_0") || null;
 
-    // Buscar otra parte del cuerpo (ejemplo: cola)
-    const bodyPart = scene.getObjectByName("BODY_TAIL_0"); // Ajusta el nombre
-    if (bodyPart) {
-      bodyPartRef.current = bodyPart;
-      console.log("✅ Parte del cuerpo encontrada:", bodyPart);
-    } else {
-      console.log("⚠️ Parte del cuerpo no encontrada");
-    }
+    if (wingRef.current) console.log("✅ Alas encontradas:", wingRef.current);
+    else console.log("⚠️ Alas no encontradas");
+
+    if (bodyPartRef.current) console.log("✅ Parte del cuerpo encontrada:", bodyPartRef.current);
+    else console.log("⚠️ Parte del cuerpo no encontrada");
+  }, [scene]);
+
+  useEffect(() => {
+    scene.traverse((obj) => {
+      if (obj.isMesh) {
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+        obj.material.needsUpdate = true;
+        obj.material.toneMapped = false;
+      }
+    });
   }, [scene]);
 
   useFrame(({ clock }) => {
     const elapsed = clock.elapsedTime;
 
-    // 📌 Movimiento diagonal del colibrí
     if (ref.current) {
-      ref.current.position.x = -5 + elapsed * 1.5; // Movimiento en X
-      ref.current.position.y = -2 + elapsed * 1.2; // Movimiento en Y
+      // Actualizar la posición
+      ref.current.position.x = minX + elapsed * 1.5;
+      ref.current.position.y = minY + elapsed * 1.2;
 
-      // 📍 Cuando llega a la mitad (x ≈ 0), inicia la rotación de 360°
-      if (ref.current.position.x >= 0 && rotationRef.current < Math.PI * 2) {
-        rotationRef.current += 0.1; // Incrementamos el giro
-        ref.current.rotation.y = Math.PI + rotationRef.current; // Rotación en Y
+      // 📌 Limitar el movimiento en X
+      if (ref.current.position.x >= maxX) {
+        ref.current.position.x = maxX; // Detener el movimiento en X
+      }
+
+      // 📌 Limitar el movimiento en Y
+      if (ref.current.position.y >= maxY) {
+        ref.current.position.y = maxY; // Detener el movimiento en Y
+      }
+
+      if (rotationRef.current >= Math.PI * 2) {
+        rotationRef.current = 0;
       }
     }
 
-    // 🦋 Movimiento de las alas (rápido y pequeño)
+    // Movimiento de las alas
     if (wingRef.current) {
-      wingRef.current.rotation.z = Math.sin(elapsed * 10) * 0.15;
+      wingRef.current.rotation.z = Math.sin(elapsed * 90) * 0.55;
     }
 
-    // 🌀 Movimiento del cuerpo (lento y más amplio)
+    // Movimiento del cuerpo
     if (bodyPartRef.current) {
-      bodyPartRef.current.rotation.x = Math.cos(elapsed * 3) * 0.1;
+      bodyPartRef.current.rotation.y = Math.cos(elapsed * 18) * 0.15;
+      bodyPartRef.current.rotation.z = Math.cos(elapsed * 0.9) * 0.4;
     }
   });
 
   return (
     <>
-      {/* 💡 Iluminación */}
+      {/* Iluminación optimizada */}
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} castShadow />
       <directionalLight position={[-5, 5, -5]} intensity={1.5} />
-      <pointLight position={[0, 5, 5]} intensity={2} color="white" />
-      <pointLight position={[0, -5, -5]} intensity={1} color="blue" />
+      <pointLight position={[0, 5, 5]} intensity={1.5} color="white" />
+      <pointLight position={[0, -5, -5]} intensity={0.5} color="#222222" />
 
-      {/* 🌍 Modelo */}
+      {/* Entorno HDR para iluminación realista */}
+      <Environment preset="sunset" />
+
+      {/* Modelo */}
       <primitive ref={ref} object={scene} />
 
-      {/* 🖱️ Controles de cámara */}
+      {/* Controles de cámara */}
       <OrbitControls enableZoom enablePan enableRotate />
     </>
   );
 };
 
 export default Model;
-
 
 

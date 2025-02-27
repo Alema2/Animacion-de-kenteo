@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import * as THREE from "three"; // Importamos Three.js para materiales
+//import * as THREE from "three"; // Importamos Three.js para materiales
 import { useFrame, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
 
