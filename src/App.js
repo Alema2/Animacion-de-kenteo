@@ -9,7 +9,7 @@ import Background from "./components/Background";
 
 function App() {
   return (
-    <div style={{ height: "100vh", overflow: "hidden" }}>
+    <div style={{ width: "100vw",height: "100vh", overflow: "hidden" }}>
       <ThreeScene>
         <color attach="background" args={["#000000"]} />
 
@@ -18,8 +18,8 @@ function App() {
 
         {/* Foco grande desde la esquina superior izquierda */}
         <directionalLight 
-          position={[-10, 10, 5]} 
-          intensity={20} 
+          position={[10, 10, 5]} 
+          intensity={50} 
           castShadow 
         />
 
@@ -36,9 +36,11 @@ function App() {
         {/* Luz spot adicional si necesitas más efectos */}
         <spotLight position={[0, 10, 0]} angle={0.3} intensity={3} castShadow />
 
-        {/* Modelo 3D */}
+        {/* Fondo (se renderiza primero) */}
+        <Background />  
+
+        {/* Modelo 3D (aparece adelante) */}
         <Model />
-        <Background />
 
         {/* Controles y estrellas */}
         {/*<OrbitControls autoRotate />*/}
