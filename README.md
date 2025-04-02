@@ -40,17 +40,5 @@ Iniciar el proyecto:
 ```
 
 
-*Nota:* Falta implementar `Background.js`. (Asignado a Jerson)
 
-Como será el `Background.js`
-```
-✔ Un cuadrado grande (pared) detrás del colibrí
-✔ Otro cuadrado (piso) debajo del colibrí
-```
-Dónde Integrarlo
-```
-1 Crear Background.js para las figuras geométricas(PISO Y PARED)
-2️ Importarlo en ThreeScene.js y renderizarlo antes del colibrí
-3 En App.js se importa el Background.js y ThreeScene.js
-```
 
